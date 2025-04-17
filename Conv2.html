@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>PhoneNumber Converter</title>
+    <style>
+        body {
+            font-family: sans-serif;
+        }
+        .container {
+            width: 300px;
+            margin: 0 auto;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        label, input, button, div {
+            display: block;
+            margin-bottom: 15px;
+        }
+        button {
+            padding: 3px 15px;
+            cursor: pointer;
+        }
+        #result {
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>PhoneNumber Converter</h1>
+        <label for="phoneNumber">Enter Phone Number:</label>
+        <input type="text" id="phoneNumber" placeholder="0xxxxxxxxx">
+        <button onclick="convertPhoneNumber()">Convert</button>
+        <div>Result: <span id="result"></span></div>
+        <button onclick="copyToClipboard()">Copy</button>
+    </div>
+
+    <script>
+        const phoneNumberInput = document.getElementById("phoneNumber");
+
+        phoneNumberInput.addEventListener("keypress", function(event) {
+            if (event.key === "Enter") {
+                convertPhoneNumber();
+            }
+        });
+
+        function convertPhoneNumber() {
+            const phoneNumberInputValue = phoneNumberInput.value;
+            let result = phoneNumberInputValue;
+            if (phoneNumberInputValue.startsWith("0")) {
+                result = "66" + phoneNumberInputValue.substring(1);
+            }
+            document.getElementById("result").textContent = result;
+        }
+
+        function copyToClipboard() {
+            const resultElement = document.getElementById("result");
+            const textToCopy = resultElement.textContent;
+
+            if (navigator.clipboard) {
+                navigator.clipboard.writeText(textToCopy).then(() => {
+                    console.log("Copied!");
+                }).catch(err => {
+                    console.error('Could not copy: ', err);
+                    alert("Could not copy, please try again.");
+                });
+            } else {
+                const tempInput = document.createElement("textarea");
+                tempInput.value = textToCopy;
+                document.body.appendChild(tempInput);
+                tempInput.select();
+                document.execCommand("copy");
+                document.body.removeChild(tempInput);
+                console.log("Copied!");
+            }
+        }
+    </script>
+</body>
+</html>
