@@ -1,80 +1,191 @@
 <!DOCTYPE html>
-<html>
-<head>
-    <title>PhoneNumber Converter</title>
-    <style>
-        body {
-            font-family: sans-serif;
-        }
-        .container {
-            width: 300px;
-            margin: 0 auto;
-            padding: 20px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-        }
-        label, input, button, div {
-            display: block;
-            margin-bottom: 15px;
-        }
-        button {
-            padding: 3px 15px;
-            cursor: pointer;
-        }
-        #result {
-            font-weight: bold;
-        }
-    </style>
-</head>
-<body>
-    <div class="container">
-        <h1>PhoneNumber Converter</h1>
-        <label for="phoneNumber">Enter Phone Number:</label>
-        <input type="text" id="phoneNumber" placeholder="0xxxxxxxxx">
-        <button onclick="convertPhoneNumber()">Convert</button>
-        <div>Result: <span id="result"></span></div>
-        <button onclick="copyToClipboard()">Copy</button>
-    </div>
+ <html>
+ <head>
+  <title>PhoneNumber Converter</title>
+  <style>
+  body {
+    font-family: 'Roboto', sans-serif; /* เปลี่ยนฟอนต์เป็น Roboto ที่ดูสบายตา */
+    background-color: #f4f6f8; /* สีพื้นหลังที่อ่อนโยน */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    margin: 0;
+  }
 
-    <script>
-        const phoneNumberInput = document.getElementById("phoneNumber");
+  .container {
+    background-color: #fff;
+    width: 320px; /* ลดขนาดคอนเทนเนอร์เล็กน้อย */
+    padding: 25px; /* ลดระยะห่างภายในเล็กน้อย */
+    border-radius: 8px; /* ขอบมนเล็กน้อย */
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08); /* ลดความเข้มของเงา */
+  }
 
-        phoneNumberInput.addEventListener("keypress", function(event) {
-            if (event.key === "Enter") {
-                convertPhoneNumber();
-            }
-        });
+  h1 {
+    color: #444; /* สีหัวข้อที่เข้มขึ้นเล็กน้อย */
+    text-align: center;
+    margin-bottom: 20px; /* ลดระยะห่างด้านล่าง */
+    font-size: 24px; /* ลดขนาดฟอนต์หัวข้อ */
+  }
 
-        function convertPhoneNumber() {
-            const phoneNumberInputValue = phoneNumberInput.value;
-            let result = phoneNumberInputValue;
-            if (phoneNumberInputValue.startsWith("0")) {
-                result = "66" + phoneNumberInputValue.substring(1);
-            }
-            document.getElementById("result").textContent = result;
-        }
+  label {
+    display: block;
+    margin-bottom: 8px; /* ลดระยะห่างด้านล่าง */
+    color: #666;
+    font-weight: bold;
+    font-size: 15px; /* ลดขนาดฟอนต์ป้ายกำกับ */
+  }
 
-        function copyToClipboard() {
-            const resultElement = document.getElementById("result");
-            const textToCopy = resultElement.textContent;
+  input[type="text"] {
+    width: calc(100% - 18px); /* ปรับขนาด input */
+    padding: 8px; /* ลดขนาด padding */
+    margin-bottom: 15px; /* ลดระยะห่างด้านล่าง */
+    border: 1px solid #ddd;
+    border-radius: 4px; /* ขอบมนน้อยลง */
+    font-size: 15px; /* ลดขนาดฟอนต์ input */
+    box-sizing: border-box; /* ทำให้ padding และ border ไม่ส่งผลต่อความกว้าง */
+  }
 
-            if (navigator.clipboard) {
-                navigator.clipboard.writeText(textToCopy).then(() => {
-                    console.log("Copied!");
-                }).catch(err => {
-                    console.error('Could not copy: ', err);
-                    alert("Could not copy, please try again.");
-                });
-            } else {
-                const tempInput = document.createElement("textarea");
-                tempInput.value = textToCopy;
-                document.body.appendChild(tempInput);
-                tempInput.select();
-                document.execCommand("copy");
-                document.body.removeChild(tempInput);
-                console.log("Copied!");
-            }
-        }
-    </script>
-</body>
-</html>
+  div {
+    margin-bottom: 15px; /* ลดระยะห่างด้านล่าง */
+    color: #777;
+    font-size: 14px; /* ลดขนาดฟอนต์ Result */
+  }
+
+  #result {
+    font-weight: bold;
+    color: #333;
+    font-size: 16px; /* ลดขนาดฟอนต์ Result ที่เน้น */
+  }
+
+  button {
+    background-color: #0080ff; /* เปลี่ยนสีปุ่มเล็กน้อย */
+    color: white;
+    padding: 10px 0; /* ลดขนาด padding ปุ่ม */
+    border: none;
+    border-radius: 4px; /* ขอบมนน้อยลง */
+    cursor: pointer;
+    font-size: 15px; /* ลดขนาดฟอนต์ปุ่ม */
+    transition: background-color 0.3s ease;
+    width: 100%; /* เพิ่มความกว้างให้เต็มคอนเทนเนอร์ */
+    box-sizing: border-box; /* ทำให้ padding และ border ไม่ส่งผลต่อความกว้าง */
+  }
+
+  button:hover {
+    background-color: #0069d9;
+  }
+
+  .copied-message {
+    position: fixed;
+    background-color: rgba(0, 0, 0, 0.75); /* ปรับความทึบเล็กน้อย */
+    color: white;
+    padding: 8px 12px; /* ลดขนาด padding ข้อความ */
+    border-radius: 4px;
+    font-size: 13px; /* ลดขนาดฟอนต์ข้อความ */
+    z-index: 1000;
+    opacity: 0;
+    transition: opacity 0.3s ease-in-out;
+  }
+  </style>
+ </head>
+ <body>
+  <div class="container">
+   <h1>PhoneNumber Converter</h1>
+   <label for="phoneNumber">Enter Phone Number:</label>
+   <input type="text" id="phoneNumber" placeholder="0xxxxxxxxx">
+   <div>Result: <span id="result"></span></div>
+   <button onclick="copyToClipboard(this)">Copy</button>
+  </div>
+
+  <script>
+  const phoneNumberInput = document.getElementById("phoneNumber");
+  const resultElement = document.getElementById("result");
+  const copyButton = document.querySelector('button'); // เลือกปุ่ม "คัดลอก"
+  let copiedMessageElement = null;
+
+  phoneNumberInput.addEventListener("input", convertPhoneNumber);
+
+  phoneNumberInput.addEventListener("keypress", function(event) {
+   if (event.key === "Enter") {
+    copyToClipboard(phoneNumberInput); // ส่ง input element ไปด้วย
+   }
+  });
+
+  document.addEventListener("keydown", function(event) {
+   if ((event.ctrlKey || event.metaKey) && event.key === "c") {
+    copyToClipboard(copyButton); // ส่งปุ่ม "Copy" element ไปด้วย
+   }
+  });
+
+  function convertPhoneNumber() {
+   const phoneNumberInputValue = phoneNumberInput.value.trim();
+   if (phoneNumberInputValue.startsWith("0") && phoneNumberInputValue.length === 10 && /^\d+$/.test(phoneNumberInputValue)) {
+    resultElement.textContent = "66" + phoneNumberInputValue.substring(1);
+   } else if (phoneNumberInputValue.startsWith("66") && phoneNumberInputValue.length === 11 && /^\d+$/.test(phoneNumberInputValue)) {
+    resultElement.textContent = phoneNumberInputValue;
+   } else {
+    resultElement.textContent = "Invalid phone number";
+   }
+  }
+
+  function showCopiedMessage(x, y) {
+   if (!copiedMessageElement) {
+    copiedMessageElement = document.createElement('span');
+    copiedMessageElement.classList.add('copied-message');
+    document.body.appendChild(copiedMessageElement);
+   }
+   copiedMessageElement.textContent = "Copied!";
+   copiedMessageElement.style.left = (x + 10) + 'px';
+   copiedMessageElement.style.top = (y + 10) + 'px';
+   copiedMessageElement.style.opacity = 1;
+
+   setTimeout(() => {
+    if (copiedMessageElement) {
+     copiedMessageElement.style.opacity = 0;
+     setTimeout(() => {
+      if (copiedMessageElement && copiedMessageElement.parentNode) {
+       copiedMessageElement.parentNode.removeChild(copiedMessageElement);
+       copiedMessageElement = null;
+      }
+     }, 300);
+    }
+   }, 1000);
+  }
+
+  function copyToClipboard(element) {
+   const textToCopy = resultElement.textContent;
+
+   if (textToCopy === "Invalid phone number" || textToCopy === "") {
+    return;
+   }
+
+   if (navigator.clipboard) {
+    navigator.clipboard.writeText(textToCopy)
+     .then(() => {
+      const rect = element.getBoundingClientRect();
+      const x = rect.left + (rect.width / 2) + window.scrollX;
+      const y = rect.top + (rect.height / 2) + window.scrollY;
+      showCopiedMessage(x, y);
+      console.log("Copied to clipboard!");
+     })
+     .catch(err => {
+      console.error('Could not copy: ', err);
+      alert("Could not copy to clipboard, please try again");
+     });
+   } else {
+    const tempInput = document.createElement("textarea");
+    tempInput.value = textToCopy;
+    document.body.appendChild(tempInput);
+    tempInput.select();
+    document.execCommand("copy");
+    document.body.removeChild(tempInput);
+    const rect = element.getBoundingClientRect();
+    const x = rect.left + (rect.width / 2) + window.scrollX;
+    const y = rect.top + (rect.height / 2) + window.scrollY;
+    showCopiedMessage(x, y);
+    console.log("Copied to clipboard!");
+   }
+  }
+  </script>
+ </body>
+ </html>
