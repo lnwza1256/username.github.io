@@ -1,191 +1,225 @@
 <!DOCTYPE html>
- <html>
- <head>
-  <title>PhoneNumber Converter</title>
-  <style>
-  body {
-    font-family: 'Roboto', sans-serif; /* เปลี่ยนฟอนต์เป็น Roboto ที่ดูสบายตา */
-    background-color: #f4f6f8; /* สีพื้นหลังที่อ่อนโยน */
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 100vh;
-    margin: 0;
-  }
+<html lang="th">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Kae</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #121212; /* สีพื้นหลังมืด */
+            color: #f0f0f0; /* สีข้อความสว่าง */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
 
-  .container {
-    background-color: #fff;
-    width: 320px; /* ลดขนาดคอนเทนเนอร์เล็กน้อย */
-    padding: 25px; /* ลดระยะห่างภายในเล็กน้อย */
-    border-radius: 8px; /* ขอบมนเล็กน้อย */
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08); /* ลดความเข้มของเงา */
-  }
+        .container {
+            width: 100%;
+            max-width: 450px;
+            background-color: #1e1e1e; /* สีพื้นหลังของคอนเทนเนอร์ที่มืดลง */
+            padding: 20px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5); /* เงาที่ชัดขึ้น */
+            position: relative;
+            border-radius: 8px; /* เพิ่มขอบโค้งมนเล็กน้อย */
+        }
 
-  h1 {
-    color: #444; /* สีหัวข้อที่เข้มขึ้นเล็กน้อย */
-    text-align: center;
-    margin-bottom: 20px; /* ลดระยะห่างด้านล่าง */
-    font-size: 24px; /* ลดขนาดฟอนต์หัวข้อ */
-  }
+        .tabs {
+            display: flex;
+            background-color: #2c2c2c; /* สีพื้นหลังของแท็บ */
+            margin-bottom: 20px;
+            border-radius: 6px; /* เพิ่มขอบโค้งมน */
+            overflow: hidden; /* ป้องกันขอบเกิน */
+        }
 
-  label {
-    display: block;
-    margin-bottom: 8px; /* ลดระยะห่างด้านล่าง */
-    color: #666;
-    font-weight: bold;
-    font-size: 15px; /* ลดขนาดฟอนต์ป้ายกำกับ */
-  }
+        .tab-button {
+            padding: 15px 20px;
+            background-color: #333; /* สีปุ่มแท็บเริ่มต้น */
+            color: #e0e0e0; /* สีข้อความปุ่มแท็บ */
+            border: none;
+            cursor: pointer;
+            flex: 1;
+            text-align: center;
+            transition: background-color 0.3s ease;
+        }
 
-  input[type="text"] {
-    width: calc(100% - 18px); /* ปรับขนาด input */
-    padding: 8px; /* ลดขนาด padding */
-    margin-bottom: 15px; /* ลดระยะห่างด้านล่าง */
-    border: 1px solid #ddd;
-    border-radius: 4px; /* ขอบมนน้อยลง */
-    font-size: 15px; /* ลดขนาดฟอนต์ input */
-    box-sizing: border-box; /* ทำให้ padding และ border ไม่ส่งผลต่อความกว้าง */
-  }
+        .tab-button:hover {
+            background-color: #444; /* สีปุ่มแท็บเมื่อโฮเวอร์ */
+        }
 
-  div {
-    margin-bottom: 15px; /* ลดระยะห่างด้านล่าง */
-    color: #777;
-    font-size: 14px; /* ลดขนาดฟอนต์ Result */
-  }
+        .tab-button.active {
+            background-color: #f0f0f0; /* สีปุ่มแท็บที่ใช้งาน */
+            color: #333; /* สีข้อความปุ่มแท็บที่ใช้งาน */
+        }
 
-  #result {
-    font-weight: bold;
-    color: #333;
-    font-size: 16px; /* ลดขนาดฟอนต์ Result ที่เน้น */
-  }
+        .tab-content {
+            padding: 20px;
+        }
 
-  button {
-    background-color: #0080ff; /* เปลี่ยนสีปุ่มเล็กน้อย */
-    color: white;
-    padding: 10px 0; /* ลดขนาด padding ปุ่ม */
-    border: none;
-    border-radius: 4px; /* ขอบมนน้อยลง */
-    cursor: pointer;
-    font-size: 15px; /* ลดขนาดฟอนต์ปุ่ม */
-    transition: background-color 0.3s ease;
-    width: 100%; /* เพิ่มความกว้างให้เต็มคอนเทนเนอร์ */
-    box-sizing: border-box; /* ทำให้ padding และ border ไม่ส่งผลต่อความกว้าง */
-  }
+        .tab-panel {
+            display: none;
+        }
 
-  button:hover {
-    background-color: #0069d9;
-  }
+        .tab-panel.active {
+            display: block;
+        }
 
-  .copied-message {
-    position: fixed;
-    background-color: rgba(0, 0, 0, 0.75); /* ปรับความทึบเล็กน้อย */
-    color: white;
-    padding: 8px 12px; /* ลดขนาด padding ข้อความ */
-    border-radius: 4px;
-    font-size: 13px; /* ลดขนาดฟอนต์ข้อความ */
-    z-index: 1000;
-    opacity: 0;
-    transition: opacity 0.3s ease-in-out;
-  }
-  </style>
- </head>
- <body>
-  <div class="container">
-   <h1>PhoneNumber Converter</h1>
-   <label for="phoneNumber">Enter Phone Number:</label>
-   <input type="text" id="phoneNumber" placeholder="0xxxxxxxxx">
-   <div>Result: <span id="result"></span></div>
-   <button onclick="copyToClipboard(this)">Copy</button>
-  </div>
+        .box {
+            margin: 10px 0;
+        }
 
-  <script>
-  const phoneNumberInput = document.getElementById("phoneNumber");
-  const resultElement = document.getElementById("result");
-  const copyButton = document.querySelector('button'); // เลือกปุ่ม "คัดลอก"
-  let copiedMessageElement = null;
+        input[type="text"] {
+            padding: 10px;
+            width: 90%;
+            margin-bottom: 10px;
+            border: 1px solid #555; /* ขอบสีเข้มขึ้น */
+            background-color: #333; /* พื้นหลังอินพุตมืด */
+            color: #f0f0f0; /* สีข้อความในอินพุต */
+            font-size: 14px;
+            border-radius: 4px;
+        }
 
-  phoneNumberInput.addEventListener("input", convertPhoneNumber);
+        input[type="text"]:focus {
+            border-color: #bb86fc; /* สีขอบเมื่อโฟกัส */
+            outline: none;
+            box-shadow: 0 0 5px rgba(187, 134, 252, 0.5); /* เงาเมื่อโฟกัส */
+        }
 
-  phoneNumberInput.addEventListener("keypress", function(event) {
-   if (event.key === "Enter") {
-    copyToClipboard(phoneNumberInput); // ส่ง input element ไปด้วย
-   }
-  });
+        button {
+            padding: 10px;
+            background-color: #bb86fc; /* สีปุ่มหลัก */
+            color: #212121; /* สีข้อความปุ่มหลัก */
+            border: none;
+            width: 95%;
+            cursor: pointer;
+            font-size: 14px;
+            border-radius: 4px;
+            transition: background-color 0.3s ease;
+        }
 
-  document.addEventListener("keydown", function(event) {
-   if ((event.ctrlKey || event.metaKey) && event.key === "c") {
-    copyToClipboard(copyButton); // ส่งปุ่ม "Copy" element ไปด้วย
-   }
-  });
+        button:hover {
+            background-color: #9c6ade; /* สีปุ่มเมื่อโฮเวอร์ */
+        }
 
-  function convertPhoneNumber() {
-   const phoneNumberInputValue = phoneNumberInput.value.trim();
-   if (phoneNumberInputValue.startsWith("0") && phoneNumberInputValue.length === 10 && /^\d+$/.test(phoneNumberInputValue)) {
-    resultElement.textContent = "66" + phoneNumberInputValue.substring(1);
-   } else if (phoneNumberInputValue.startsWith("66") && phoneNumberInputValue.length === 11 && /^\d+$/.test(phoneNumberInputValue)) {
-    resultElement.textContent = phoneNumberInputValue;
-   } else {
-    resultElement.textContent = "Invalid phone number";
-   }
-  }
+        #copyAlert {
+            position: fixed;
+            background-color: #bb86fc; /* สีแจ้งเตือนการคัดลอก */
+            color: #212121;
+            padding: 10px 15px;
+            display: none;
+            font-size: 10px;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="tabs">
+            <button class="tab-button active" onclick="switchTab('ConvertN')">ConvertN</button>
+            <button class="tab-button" onclick="switchTab('DelHyphen')">DelHyphen</button>
+        </div>
 
-  function showCopiedMessage(x, y) {
-   if (!copiedMessageElement) {
-    copiedMessageElement = document.createElement('span');
-    copiedMessageElement.classList.add('copied-message');
-    document.body.appendChild(copiedMessageElement);
-   }
-   copiedMessageElement.textContent = "Copied!";
-   copiedMessageElement.style.left = (x + 10) + 'px';
-   copiedMessageElement.style.top = (y + 10) + 'px';
-   copiedMessageElement.style.opacity = 1;
+        <div class="tab-content">
+            <div id="ConvertN" class="tab-panel active">
+                <h2>ConvertN</h2>
+                <div class="box">
+                    <input type="text" id="phoneInput" placeholder="กรอกเบอร์โทรศัพท์" oninput="convertPhoneNumber()" onkeydown="copyOnEnter(event)">
+                </div>
+                <div class="box">
+                    <input type="text" id="convertedPhone" readonly placeholder="ผลลัพธ์จะถูกแสดงที่นี่">
+                </div>
+                <button onclick="copyToClipboard()">Copy</button>
+            </div>
 
-   setTimeout(() => {
-    if (copiedMessageElement) {
-     copiedMessageElement.style.opacity = 0;
-     setTimeout(() => {
-      if (copiedMessageElement && copiedMessageElement.parentNode) {
-       copiedMessageElement.parentNode.removeChild(copiedMessageElement);
-       copiedMessageElement = null;
-      }
-     }, 300);
-    }
-   }, 1000);
-  }
+            <div id="DelHyphen" class="tab-panel">
+                <h2>DelHyphen</h2>
+                <div class="box">
+                    <input type="text" id="numberInput" placeholder="123-456-789" oninput="removeHyphen()" onkeydown="copyOnEnter2(event)">
+                </div>
+                <div class="box">
+                    <input type="text" id="cleanedNumber" readonly placeholder="ผลลัพธ์จะถูกแสดงที่นี่">
+                </div>
+                <button onclick="copyToClipboard2()">Copy</button>
+            </div>
+        </div>
 
-  function copyToClipboard(element) {
-   const textToCopy = resultElement.textContent;
+        <div id="copyAlert">Copy!</div>
+    </div>
 
-   if (textToCopy === "Invalid phone number" || textToCopy === "") {
-    return;
-   }
+    <script>
+        function switchTab(tabId) {
+            const tabs = document.querySelectorAll('.tab-panel');
+            const buttons = document.querySelectorAll('.tab-button');
+            tabs.forEach(tab => tab.classList.remove('active'));
+            document.getElementById(tabId).classList.add('active');
+            buttons.forEach(button => button.classList.remove('active'));
+            const activeButton = [...buttons].find(button => button.innerText === tabId);
+            activeButton.classList.add('active');
+        }
 
-   if (navigator.clipboard) {
-    navigator.clipboard.writeText(textToCopy)
-     .then(() => {
-      const rect = element.getBoundingClientRect();
-      const x = rect.left + (rect.width / 2) + window.scrollX;
-      const y = rect.top + (rect.height / 2) + window.scrollY;
-      showCopiedMessage(x, y);
-      console.log("Copied to clipboard!");
-     })
-     .catch(err => {
-      console.error('Could not copy: ', err);
-      alert("Could not copy to clipboard, please try again");
-     });
-   } else {
-    const tempInput = document.createElement("textarea");
-    tempInput.value = textToCopy;
-    document.body.appendChild(tempInput);
-    tempInput.select();
-    document.execCommand("copy");
-    document.body.removeChild(tempInput);
-    const rect = element.getBoundingClientRect();
-    const x = rect.left + (rect.width / 2) + window.scrollX;
-    const y = rect.top + (rect.height / 2) + window.scrollY;
-    showCopiedMessage(x, y);
-    console.log("Copied to clipboard!");
-   }
-  }
-  </script>
- </body>
- </html>
+        function convertPhoneNumber() {
+            const phoneInput = document.getElementById('phoneInput').value;
+            let converted = phoneInput;
+            if (phoneInput.startsWith('0')) {
+                converted = '66' + phoneInput.slice(1);
+            }
+            document.getElementById('convertedPhone').value = converted;
+        }
+
+        function copyToClipboard() {
+            const convertedPhone = document.getElementById('convertedPhone');
+            convertedPhone.select();
+            document.execCommand('copy');
+            showCopyAlert(event);
+        }
+
+        function copyOnEnter(event) {
+            if (event.key === 'Enter') {
+                copyToClipboard();
+            }
+        }
+
+        function removeHyphen() {
+            const numberInput = document.getElementById('numberInput').value;
+            let cleaned = numberInput.replace(/-/g, '');
+            document.getElementById('cleanedNumber').value = cleaned;
+        }
+
+        function copyToClipboard2() {
+            const cleanedNumber = document.getElementById('cleanedNumber');
+            cleanedNumber.select();
+            document.execCommand('copy');
+            showCopyAlert(event);
+        }
+
+        function copyOnEnter2(event) {
+            if (event.key === 'Enter') {
+                copyToClipboard2();
+            }
+        }
+
+        function showCopyAlert(event) {
+            const copyAlert = document.getElementById('copyAlert');
+            copyAlert.style.display = 'block';
+            const mouseX = event.clientX;
+            const mouseY = event.clientY;
+            copyAlert.style.left = mouseX + 'px';
+            copyAlert.style.top = mouseY + 'px';
+            setTimeout(() => {
+                copyAlert.style.display = 'none';
+            }, 500);
+        }
+
+        document.addEventListener('mousemove', function(event) {
+            const copyAlert = document.getElementById('copyAlert');
+            if (copyAlert.style.display === 'block') {
+                copyAlert.style.left = event.clientX + 'px';
+                copyAlert.style.top = event.clientY + 'px';
+            }
+        });
+    </script>
+</body>
+</html>
