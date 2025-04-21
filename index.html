@@ -19,20 +19,20 @@
 
         .container {
             width: 100%;
-            max-width: 600px;
+            max-width: 400px;
             background-color: #1e1e1e; /* สีพื้นหลังของคอนเทนเนอร์ที่มืดลง */
-            padding: 20px;
+            padding: 0px;
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5); /* เงาที่ชัดขึ้น */
             position: relative;
-            border-radius: 8px; /* เพิ่มขอบโค้งมนเล็กน้อย */
+            border-radius: 0px; /* เพิ่มขอบโค้งมนเล็กน้อย */
         }
 
         .tabs {
             display: flex;
             background-color: #2c2c2c; /* สีพื้นหลังของแท็บ */
-            margin-bottom: 20px;
-            border-radius: 6px; /* เพิ่มขอบโค้งมน */
-            overflow: hidden; /* ป้องกันขอบเกิน */
+            margin-bottom: -10px;
+            border-radius: 0px; /* เพิ่มขอบโค้งมน */
+            
         }
 
         .tab-button {
@@ -51,8 +51,8 @@
         }
 
         .tab-button.active {
-            background-color: #f0f0f0; /* สีปุ่มแท็บที่ใช้งาน */
-            color: #333; /* สีข้อความปุ่มแท็บที่ใช้งาน */
+            background-color: #1e1e1e; /* สีปุ่มแท็บที่ใช้งาน */
+            color:#f0f0f0;; /* สีข้อความปุ่มแท็บที่ใช้งาน */
         }
 
         .tab-content {
@@ -68,12 +68,12 @@
         }
 
         .box {
-            margin: 10px 0;
+            margin: 0px 0;
         }
 
         input[type="text"] {
             padding: 10px;
-            width: 100%;
+            width: 340px;
             margin-bottom: 10px;
             border: 1px solid #555; /* ขอบสีเข้มขึ้น */
             background-color: #333; /* พื้นหลังอินพุตมืด */
@@ -90,10 +90,12 @@
 
         button {
             padding: 10px;
+            align-items: center;
+            width: 100%;
             background-color: #bb86fc; /* สีปุ่มหลัก */
             color: #212121; /* สีข้อความปุ่มหลัก */
             border: none;
-            width: 100%;
+            
             cursor: pointer;
             font-size: 14px;
             border-radius: 4px;
