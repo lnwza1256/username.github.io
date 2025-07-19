@@ -168,7 +168,7 @@
             if (phoneInput.startsWith('0')) {
                 converted = '66' + phoneInput.slice(1);
             }
-            document.getElementById('convertedPhone').value = converted;
+            document.getElementById('convertedPhone').value = converted.replace(/[^0-9]/g, '');
         }
 
         function copyToClipboard() {
@@ -186,7 +186,7 @@
 
         function removeHyphen() {
             const numberInput = document.getElementById('numberInput').value;
-            let cleaned = numberInput.replace(/-/g, '');
+            let cleaned = numberInput.replace(/[^0-9]/g, '');
             document.getElementById('cleanedNumber').value = cleaned;
         }
 
