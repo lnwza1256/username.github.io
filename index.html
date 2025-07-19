@@ -165,8 +165,9 @@
         function convertPhoneNumber() {
             const phoneInput = document.getElementById('phoneInput').value;
             let converted = phoneInput;
-            if (phoneInput.startsWith('0')) {
-                converted = '66' + phoneInput.slice(1);
+            let numberString = converted.replace(/[^0-9]/g, '');
+            if (numberString.startsWith('0')) {
+                converted = '66' + numberString.slice(1);
             }
             document.getElementById('convertedPhone').value = converted.replace(/[^0-9]/g, '');
         }
